@@ -88,6 +88,7 @@ export default {
   helpCenter: 'Центр помощи',
   logout: 'Выход',
   selectLanguage: 'Выберите язык',
+  chooseYourPreferredLanguage: 'Выберите предпочитаемый язык',
   
   // Weather
   temperature: 'Температура',

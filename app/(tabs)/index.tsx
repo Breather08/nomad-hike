@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import {
   StyleSheet,
   Text,
@@ -28,15 +28,30 @@ export default function HomeScreen() {
 
   const [nearbyTrails] = useState<Trail[]>(Trails.slice(0, 3));
 
-  const renderTrailCard = ({ item }: { item: Trail }) => (
-    <TrailCard
-      trail={item}
-      onPress={() => router.push(`/trail-details/${item.id}`)}
-      style={styles.trailCard}
-    />
+  // Memoize the trail card renderer
+  const renderTrailCard = useCallback(
+    ({ item }: { item: Trail }) => (
+      <TrailCard
+        trail={item}
+        onPress={() => router.push(`/trail-details/${item.id}`)}
+        style={styles.trailCard}
+      />
+    ),
+    [router]
   );
 
-  const keyExtractor = (item: Trail) => item.id.toString();
+  // Memoize key extractor
+  const keyExtractor = useCallback((item: Trail) => item.id.toString(), []);
+
+  // Memoize item layout calculation
+  const getItemLayout = useCallback(
+    (data: Trail[] | null | undefined, index: number) => ({
+      length: 296, // 280 width + 16 margin
+      offset: 296 * index,
+      index,
+    }),
+    []
+  );
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -70,11 +85,11 @@ export default function HomeScreen() {
               maxToRenderPerBatch={3}
               windowSize={5}
               initialNumToRender={2}
-              getItemLayout={(data, index) => ({
-                length: 296, // 280 width + 16 margin
-                offset: 296 * index,
-                index,
-              })}
+              // getItemLayout={getItemLayout}
+              updateCellsBatchingPeriod={50}
+              maintainVisibleContentPosition={{
+                minIndexForVisible: 0,
+              }}
             />
           </View>
 

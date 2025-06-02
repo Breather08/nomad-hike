@@ -1,9 +1,11 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, ViewStyle } from 'react-native';
+import React, { useMemo } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, ViewStyle } from 'react-native';
 import { useColorScheme } from 'react-native';
 import { MapPin, Mountain, Clock, BadgeCheck } from 'lucide-react-native';
 
 import { Colors } from '@/constants/Colors';
 import { Trail } from '@/types/trail';
+import LazyImage from '@/components/common/LazyImage';
 
 interface TrailCardProps {
   trail: Trail;
@@ -11,12 +13,12 @@ interface TrailCardProps {
   style?: ViewStyle;
 }
 
-export default function TrailCard({ trail, onPress, style }: TrailCardProps) {
+const TrailCard: React.FC<TrailCardProps> = ({ trail, onPress, style }) => {
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? 'light'];
   
-  // Get difficulty color
-  const getDifficultyColor = () => {
+  // Memoize difficulty color calculation
+  const difficultyColor = useMemo(() => {
     switch (trail.difficulty) {
       case 'easy':
         return Colors.success.main;
@@ -27,19 +29,26 @@ export default function TrailCard({ trail, onPress, style }: TrailCardProps) {
       default:
         return colors.textSecondary;
     }
-  };
+  }, [trail.difficulty, colors.textSecondary]);
+  
+  // Memoize container style
+  const containerStyle = useMemo(() => [
+    styles.container, 
+    { backgroundColor: colors.card, borderColor: colors.border },
+    style
+  ], [colors.card, colors.border, style]);
   
   return (
     <TouchableOpacity 
-      style={[
-        styles.container, 
-        { backgroundColor: colors.card, borderColor: colors.border },
-        style
-      ]}
+      style={containerStyle}
       onPress={onPress}
       activeOpacity={0.8}
     >
-      <Image source={{ uri: trail.image }} style={styles.image} />
+      <LazyImage 
+        source={{ uri: trail.image }} 
+        style={styles.image}
+        fadeDuration={200}
+      />
       
       {trail.verified && (
         <View style={styles.verifiedBadge}>
@@ -61,7 +70,7 @@ export default function TrailCard({ trail, onPress, style }: TrailCardProps) {
         
         <View style={styles.detailsContainer}>
           <View style={styles.detailItem}>
-            <Mountain color={getDifficultyColor()} size={14} />
+            <Mountain color={difficultyColor} size={14} />
             <Text style={[styles.detailText, { color: colors.text }]}>
               {trail.difficulty}
             </Text>
@@ -77,13 +86,18 @@ export default function TrailCard({ trail, onPress, style }: TrailCardProps) {
       </View>
     </TouchableOpacity>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     borderRadius: 12,
     overflow: 'hidden',
     borderWidth: 1,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
   image: {
     width: '100%',
@@ -129,4 +143,13 @@ const styles = StyleSheet.create({
     marginLeft: 4,
     textTransform: 'capitalize',
   },
+});
+
+// Memoize the entire component
+export default React.memo(TrailCard, (prevProps, nextProps) => {
+  return (
+    prevProps.trail.id === nextProps.trail.id &&
+    prevProps.trail.conditions?.status === nextProps.trail.conditions?.status &&
+    prevProps.style === nextProps.style
+  );
 });

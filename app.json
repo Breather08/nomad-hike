@@ -14,7 +14,7 @@
     "splash": {
       "image": "./assets/images/icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#F7FAFC"
     },
     "web": {
       "bundler": "metro",

@@ -12,6 +12,7 @@ export default {
   disabled: 'Disabled',
   comingSoon: 'Coming Soon',
   version: 'Version',
+  description: 'Description',
 
   // Home Screen
   welcome: 'Welcome to Nomad Trails',
@@ -27,6 +28,8 @@ export default {
   // Trails
   trips: 'Trips',
   buddies: 'Buddies',
+  viewOnMap: 'View on Map',
+  shareTrail: 'Share Trail',
   discoverTrails: 'Discover Trails',
   searchTrails: 'Search trails...',
   all: 'All',
@@ -34,6 +37,7 @@ export default {
   moderate: 'Moderate',
   hard: 'Hard',
   verified: 'Verified',
+  trailCondition: 'Trail Condition',
   noTrailsFound: 'No trails found matching your criteria',
   distance: 'Distance',
   elevation: 'Elevation',
@@ -53,6 +57,7 @@ export default {
   yourLocation: 'Your Current Location',
   fetchingLocation: 'Fetching location...',
   locationUnavailable: 'Location unavailable',
+  safetyWarning: 'Safety Warning',
   share: 'Share',
   shared: 'Shared',
   call: 'Call Emergency',
@@ -97,6 +102,7 @@ export default {
   helpCenter: 'Help Center',
   logout: 'Log out',
   selectLanguage: 'Select Language',
+  chooseYourPreferredLanguage: 'Choose your preferred language',
 
   // Weather
   temperature: 'Temperature',

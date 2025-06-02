@@ -24,8 +24,9 @@ import { Colors } from '@/constants/Colors';
 import EmergencyContacts from '@/components/emergency/EmergencyContacts';
 import EmergencyChecklist from '@/components/emergency/EmergencyChecklist';
 import EmergencyHeader from '@/components/emergency/EmergencyHeader';
+import { ScreenErrorBoundary } from '@/components/common/ErrorBoundary';
 
-export default function EmergencyScreen() {
+function EmergencyScreenContent() {
   const { t } = useTranslation();
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? 'light'];
@@ -206,6 +207,14 @@ export default function EmergencyScreen() {
         </View>
       </ScrollView>
     </View>
+  );
+}
+
+export default function EmergencyScreen() {
+  return (
+    <ScreenErrorBoundary>
+      <EmergencyScreenContent />
+    </ScreenErrorBoundary>
   );
 }
 

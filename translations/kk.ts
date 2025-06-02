@@ -88,6 +88,7 @@ export default {
   helpCenter: 'Көмек орталығы',
   logout: 'Шығу',
   selectLanguage: 'Тілді таңдаңыз',
+  chooseYourPreferredLanguage: 'Ұнататын тіліңізді таңдаңыз',
   
   // Weather
   temperature: 'Температура',
